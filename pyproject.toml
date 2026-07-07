@@ -1,0 +1,18 @@
+[project]
+name = "workflow-auto"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "alembic>=1.18.5",
+    "asyncpg>=0.31.0",
+    "fastapi>=0.138.2",
+    "pydantic-settings>=2.14.2",
+    "sqlalchemy>=2.0.51",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.15.20",
+]
