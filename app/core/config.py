@@ -13,7 +13,7 @@ class Settings(BaseSettings):
         env_file=ENV_FILE_PATH,
         env_file_encoding='utf-8',
         env_prefix='MONO_',
-        extra='ignore'
+        extra='ignore',
     )
 
 

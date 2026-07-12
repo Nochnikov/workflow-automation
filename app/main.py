@@ -6,4 +6,3 @@ app = FastAPI(
     openapi_url='/api/workflow-automation/openapi.json',
     # lifespan='off',
 )
-

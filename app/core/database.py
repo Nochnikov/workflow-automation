@@ -14,12 +14,9 @@ class DatabaseSettings(BaseSettings):
         env_file=ENV_FILE_PATH,
         env_file_encoding='utf-8',
         env_prefix='POSTGRES_',
-        extra='ignore'
+        extra='ignore',
     )
 
     @property
     def database_url(self) -> str:
-        return (
-            f'postgresql+asyncpg://{self.USER}:{self.PASSWORD}'
-            f'@{self.HOST}:{self.PORT}/{self.DB}'
-        )
+        return f'postgresql+asyncpg://{self.USER}:{self.PASSWORD}@{self.HOST}:{self.PORT}/{self.DB}'

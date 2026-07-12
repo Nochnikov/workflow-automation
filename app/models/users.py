@@ -1,17 +1,16 @@
 from sqlalchemy import String
-from sqlalchemy.orm import mapped_column, Mapped
+from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db.postgres import Base
 
 NAME_MAX_SIZE = 10
 PHONE_NUMBER_MAX_SIZE = 10
 
+
 class Users(Base):
     __tablename__ = 'users'
 
-    __table_args__ = {
-        'schema': 'application'
-    }
+    __table_args__ = {'schema': 'application'}
 
     id: Mapped[int] = mapped_column(
         primary_key=True,
