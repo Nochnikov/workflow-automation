@@ -17,16 +17,36 @@ services:
       timeout: 3s
       retries: 5
 
+  app:
+    <<: *common_configs
+    build:
+      context: ../..
+      dockerfile: deploy/dockerfile/Dockerfile
+    expose:
+      - 8001
+    ports:
+      - "8001:8001"
+    volumes:
+      - ../..:/app
+    depends_on:
+      - db
+      - api-migration
+
+
   api-migration:
     <<: *common_configs
     build:
       context: ../..
       dockerfile: deploy/dockerfile/Dockerfile
+    volumes:
+      - ../..:/app
+    command: alembic upgrade head
     environment:
       POSTGRES_HOST: db
     depends_on:
       db:
         condition: service_healthy
+    entrypoint: ""
 
 volumes:
   postgres_data:

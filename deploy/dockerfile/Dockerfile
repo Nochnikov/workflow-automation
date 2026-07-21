@@ -7,7 +7,8 @@ ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     UV_COMPILE_BYTECODE=1 \
     UV_LINK_MODE=copy \
-    UV_PROJECT_ENVIRONMENT=/app/.venv
+    UV_PROJECT_ENVIRONMENT=/venv \
+    PATH="/venv/bin:$PATH"
 
 WORKDIR /app
 
@@ -16,11 +17,14 @@ WORKDIR /app
 COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen --no-install-project --no-dev
 
-# 2) Затем сам код
+# 2) копируем команду запуска
+COPY deploy/scripts/docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
+
+# 3) Затем сам код
 COPY . .
 RUN uv sync --frozen --no-dev
 
-# .venv/bin в PATH, чтобы alembic/python вызывались напрямую
-ENV PATH="/app/.venv/bin:$PATH"
+EXPOSE 8001
 
-CMD ["alembic", "upgrade", "head"]
+ENTRYPOINT ["/docker-entrypoint.sh"]

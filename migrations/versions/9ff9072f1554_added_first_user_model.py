@@ -1,8 +1,8 @@
-"""added_user_model
+"""added first user model
 
-Revision ID: 90be976472d0
+Revision ID: 9ff9072f1554
 Revises: 
-Create Date: 2026-07-12 17:19:11.698344
+Create Date: 2026-07-22 00:21:49.073196
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '90be976472d0'
+revision: str = '9ff9072f1554'
 down_revision: Union[str, Sequence[str], None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -26,11 +26,13 @@ def upgrade() -> None:
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('first_name', sa.String(length=10), nullable=False, comment='First Name of Employee'),
     sa.Column('last_name', sa.String(length=10), nullable=False, comment='Last Name of Employee'),
+    sa.Column('hashed_password', sa.String(), nullable=True, comment='Password of Employee'),
+    sa.Column('status', sa.Enum('pending', 'approved', 'rejected', name='status_enum', native_enum=False), nullable=False, comment='Status of Employee Anketa'),
     sa.Column('phone_number', sa.String(length=10), nullable=False, comment='Phone number of Employee'),
     sa.Column('email', sa.String(), nullable=False, comment='Email Address of Employee'),
     sa.Column('position', sa.String(), nullable=False, comment='Position of Employee'),
-    sa.Column('is_active', sa.Boolean(), nullable=False, comment='Is Employee Active'),
-    sa.Column('is_manager', sa.Boolean(), nullable=False, comment='Is Employee Admin'),
+    sa.Column('is_active', sa.Boolean(), server_default=sa.text('false'), nullable=False, comment='Is Employee Active'),
+    sa.Column('is_manager', sa.Boolean(), server_default=sa.text('false'), nullable=False, comment='Is Employee Admin'),
     sa.PrimaryKeyConstraint('id'),
     schema='application'
     )

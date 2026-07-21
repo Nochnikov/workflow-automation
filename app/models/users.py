@@ -1,13 +1,15 @@
-from sqlalchemy import String
+from sqlalchemy import String, false
+from sqlalchemy import Enum as PgEnum
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db.postgres import Base
+from app.enums.user_enums import UserAnketaStatus
 
 NAME_MAX_SIZE = 10
 PHONE_NUMBER_MAX_SIZE = 10
 
 
-class Users(Base):
+class User(Base):
     __tablename__ = 'users'
 
     __table_args__ = {'schema': 'application'}
@@ -30,6 +32,24 @@ class Users(Base):
         comment='Last Name of Employee',
         nullable=False,
     )
+    hashed_password: Mapped[str] = mapped_column(
+        nullable=True,
+        comment='Password of Employee',
+        default=None,
+    )
+
+    status: Mapped[str] = mapped_column(
+        PgEnum(
+            UserAnketaStatus,
+            name='status_enum',
+            server_default=UserAnketaStatus.pending.value,
+            native_enum=False,
+            validate_strings=True,
+        ),
+        nullable=False,
+        comment='Status of Employee Anketa',
+    )
+
     phone_number: Mapped[str] = mapped_column(
         String(
             length=PHONE_NUMBER_MAX_SIZE,
@@ -47,10 +67,9 @@ class Users(Base):
     )
     is_active: Mapped[bool] = mapped_column(
         comment='Is Employee Active',
-        nullable=False,
-        default=True,
+        server_default=false(),
     )
     is_manager: Mapped[bool] = mapped_column(
         comment='Is Employee Admin',
-        default=False,
+        server_default=false(),
     )
