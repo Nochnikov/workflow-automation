@@ -1,0 +1,12 @@
+.venv
+.git
+.idea
+.ruff_cache
+__pycache__
+*.py[oc]
+build/
+dist/
+*.egg-info
+
+# Локальные env-файлы не пекутся в образ (передаются через env_file в compose)
+deploy/env/.env
