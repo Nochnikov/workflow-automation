@@ -2,6 +2,7 @@ from fastapi import APIRouter
 
 router = APIRouter()
 
+
 @router.post(
     '/filling-user-data',
     summary='Filling user related data in order to create their profile.',

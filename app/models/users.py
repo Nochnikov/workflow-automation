@@ -1,5 +1,5 @@
-from sqlalchemy import String, false
 from sqlalchemy import Enum as PgEnum
+from sqlalchemy import String, false
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db.postgres import Base
