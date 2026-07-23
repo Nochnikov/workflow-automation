@@ -1,4 +1,4 @@
-from dishka import make_async_container, AsyncContainer
+from dishka import AsyncContainer, make_async_container
 
 
 def create_container() -> AsyncContainer:

@@ -1,12 +1,12 @@
-from dishka import FromDishka
-from fastapi import APIRouter
-from fastapi import Request
+from dishka.integrations.fastapi import FromDishka, inject
+from fastapi import APIRouter, Request
 
-from app.schemas.auth.LoginRequest import LoginRequest
+from app.schemas.auth.login_request import LoginRequest
 from app.schemas.tokens import TokenResponse
-from app.service.auth.base import AuthServiceProvider
+from app.services.auth.base import AuthServiceProtocol
 
 router = APIRouter()
+
 
 @router.post(
     '/login',
@@ -14,10 +14,11 @@ router = APIRouter()
     summary='Authorization endpoint',
     response_model=TokenResponse,
 )
+@inject
 async def login(
     *,
-    service: FromDishka[AuthServiceProvider],
+    service: FromDishka[AuthServiceProtocol],
     request: Request,
-    login_dto: LoginRequest
+    login_dto: LoginRequest,
 ):
     pass

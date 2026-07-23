@@ -8,6 +8,7 @@ class JWTSettings(BaseSettings):
     ACCESS_TOKEN_EXPIRES: int
     REFRESH_TOKEN_EXPIRES: int
     ALGORITHM: str = 'HS256'
+    JWT_AUTHJWT_DECODE_AUDIENCE: str
 
     model_config = SettingsConfigDict(
         env_file=ENV_FILE_PATH,
