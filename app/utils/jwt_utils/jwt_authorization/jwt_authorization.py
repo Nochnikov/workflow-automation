@@ -48,5 +48,5 @@ class JWTAuthProvider(AuthJWT, JWTAuthProviderABC):
         """
         try:
             return int(sub)
-        except (ValueError, TypeError):
-            raise ValueError()
+        except (ValueError, TypeError) as exp:
+            raise ValueError('sub must be an integer') from exp

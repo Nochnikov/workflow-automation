@@ -8,7 +8,8 @@ from app.ioc.container import create_container
 
 
 async def lifespan(app: FastAPI):
-    """*Application lifespan: loads JWT config, wires the DI container on startup and closes it on shutdown.*
+    """*Application lifespan: loads JWT config, wires the
+    DI container on startup and closes it on shutdown.*
 
     Yields:
         None: control back to FastAPI while the application is running.

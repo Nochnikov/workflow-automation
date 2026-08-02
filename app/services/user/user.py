@@ -10,4 +10,3 @@ class UserService(UserServiceProtocol):
         """*Fills in the user anketa data in order to create their profile.*"""
 
         pass
-

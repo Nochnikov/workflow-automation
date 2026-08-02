@@ -14,9 +14,7 @@ router = APIRouter()
 )
 @inject
 async def filling_user_anketa_data(
-    *,
-    service: FromDishka[UserServiceProtocol],
-    requested_data: UserDataRequestDTO
+    *, service: FromDishka[UserServiceProtocol], requested_data: UserDataRequestDTO
 ):
     """*Fills in the user related data in order to create their profile.*
 
