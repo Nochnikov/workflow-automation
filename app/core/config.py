@@ -6,6 +6,8 @@ from app.core.jwt import JWTSettings
 
 
 class Settings(BaseSettings):
+    """*Root application settings loaded from the environment with the `MONO_` prefix.*"""
+
     project_name: str
 
     db: DatabaseSettings = DatabaseSettings()  # type: ignore

@@ -78,6 +78,11 @@ def do_run_migrations(connection: Connection) -> None:
 
 
 async def run_migrations_online() -> None:
+    """Run migrations in 'online' mode using an async engine.
+
+    Creates an async engine from the Alembic config, runs the migrations over a
+    synchronous connection and disposes of the engine afterwards.
+    """
     connectable = async_engine_from_config(
         config.get_section(config.config_ini_section, {}),
         prefix='sqlalchemy.',

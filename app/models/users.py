@@ -10,6 +10,8 @@ PHONE_NUMBER_MAX_SIZE = 10
 
 
 class User(Base):
+    """*Employee account with credentials, contact data and anketa review status.*"""
+
     __tablename__ = 'users'
 
     __table_args__ = {'schema': 'application'}

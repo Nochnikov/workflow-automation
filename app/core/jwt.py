@@ -4,6 +4,8 @@ from app.core.env import ENV_FILE_PATH
 
 
 class JWTSettings(BaseSettings):
+    """*JWT settings loaded from the environment with the `JWT_` prefix.*"""
+
     SECRET_KEY: str
     ACCESS_TOKEN_EXPIRES: int
     REFRESH_TOKEN_EXPIRES: int

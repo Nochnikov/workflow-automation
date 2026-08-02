@@ -21,4 +21,9 @@ async def login(
     request: Request,
     login_dto: LoginRequest,
 ):
+    """*Authorizes a user by email and password and issues a token pair.*
+
+    Returns:
+        TokenResponse: freshly issued access and refresh tokens.
+    """
     pass

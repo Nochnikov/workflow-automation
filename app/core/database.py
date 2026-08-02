@@ -4,6 +4,8 @@ from app.core.env import ENV_FILE_PATH
 
 
 class DatabaseSettings(BaseSettings):
+    """*PostgreSQL connection settings loaded from the environment with the `POSTGRES_` prefix.*"""
+
     USER: str
     PASSWORD: str
     HOST: str
@@ -19,4 +21,9 @@ class DatabaseSettings(BaseSettings):
 
     @property
     def database_url(self) -> str:
+        """*Builds the asyncpg SQLAlchemy DSN from the configured credentials.*
+
+        Returns:
+            str: database URL in the `postgresql+asyncpg://` format.
+        """
         return f'postgresql+asyncpg://{self.USER}:{self.PASSWORD}@{self.HOST}:{self.PORT}/{self.DB}'
