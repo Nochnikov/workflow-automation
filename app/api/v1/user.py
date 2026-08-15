@@ -21,4 +21,6 @@ async def filling_user_anketa_data(
     Returns:
         dict: operation status.
     """
-    return {'status': 'ok'}
+    return await service.filling_user_anketa_data(
+        data=requested_data
+    )

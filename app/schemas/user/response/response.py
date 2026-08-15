@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 
-class UserAnketaFillingResponse(BaseModel):
+class UserDataFillingResponse(BaseModel):
     """*Result of filling in the user anketa data.*"""
 
     message: str
