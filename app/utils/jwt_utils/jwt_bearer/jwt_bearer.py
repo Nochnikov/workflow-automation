@@ -1,19 +1,31 @@
 import http
 from typing import Any
 
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from fastapi import Request, HTTPException
+import Redis
+from fastapi import HTTPException, Request
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 from app.common import messages
 from app.utils.security import decode_token
 
 
 class JWTBearer(HTTPBearer):
+    """*Bearer security dependency validating a JWT token against the Redis blacklist.*"""
 
     def __init__(self, auto_error: bool = True):
+        """*Configures the underlying bearer scheme.*"""
         super().__init__(auto_error=auto_error)
 
     async def __call__(self, request: Request) -> dict[str, Any]:
+        """*Validates the request bearer token and returns its decoded payload.*
+
+        Returns:
+            dict[str, Any]: decoded token payload.
+
+        Raises:
+            HTTPException: if the credentials are missing, the scheme is not bearer,
+                the token is invalid, blacklisted or absent in Redis.
+        """
         credentials: HTTPAuthorizationCredentials | None = await super().__call__(request)
         if not credentials:
             raise HTTPException(
@@ -55,16 +67,13 @@ class JWTBearer(HTTPBearer):
         return decoded_token
 
     @staticmethod
-    def parse_token(jwt_token: str) -> Dict[str, Any] | None:  # noqa: WPS602
-        """
-        Функция декодирования JWT-токена.
-
-        Args:
-            jwt_token: Токен.
+    def parse_token(jwt_token: str) -> dict[str, Any] | None:  # noqa: WPS602
+        """*Decodes the given JWT token.*
 
         Returns:
-            dict: словарь с расшифрованными данными.
+            dict[str, Any] | None: decoded payload, or None if the token is invalid.
         """
         return decode_token(jwt_token)
+
 
 security_jwt = JWTBearer()

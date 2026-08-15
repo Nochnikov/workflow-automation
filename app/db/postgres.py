@@ -11,7 +11,7 @@ from app.core.config import settings
 
 
 class Base(DeclarativeBase):
-    pass
+    """*Declarative base class shared by all ORM models.*"""
 
 
 engine = create_async_engine(
@@ -28,6 +28,14 @@ async_session = async_sessionmaker(
 
 
 async def get_session_db() -> AsyncGenerator[AsyncSession, None]:
+    """*Provides an async database session and rolls it back on failure.*
+
+    Yields:
+        AsyncSession: session bound to the application engine.
+
+    Raises:
+        Exception: re-raises any error occurred inside the session after a rollback.
+    """
     async with async_session() as session:
         try:
             yield session
