@@ -1,90 +1,27 @@
 from abc import ABC, abstractmethod
-from types import TracebackType
-from typing import Self
+from contextlib import AbstractAsyncContextManager
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.repositories.user.base import UserRepositoryABC
+from app.repositories.users import UsersRepository
 
 
 class UnitOfWorkABC(ABC):
     """*Contract of the unit of work: owns the session and the transaction boundary.*
 
-    Repositories exposed by the unit of work share a single session,
-    so every change made through them is committed or rolled back at once.
+    All the repositories it exposes share a single session, so every change
+    made through them is committed or rolled back at once.
     """
 
-    users: UserRepositoryABC
+    session: AsyncSession
+    user_repository: UsersRepository
 
-    @property
     @abstractmethod
-    def session(self) -> AsyncSession:
-        """*Session shared by all repositories of the unit of work.*
+    def transaction(self) -> AbstractAsyncContextManager[None]:
+        """*Opens a transaction committed on a normal exit and rolled back on an error.*
 
         Returns:
-            AsyncSession: the currently opened session.
-
-        Raises:
-            NotImplementedError: if the subclass does not implement the property.
-        """
-        raise NotImplementedError()
-
-    @abstractmethod
-    async def __aenter__(self) -> Self:
-        """*Opens the session and makes the repositories available.*
-
-        Returns:
-            Self: the started unit of work.
-
-        Raises:
-            NotImplementedError: if the subclass does not implement the method.
-        """
-        raise NotImplementedError()
-
-    @abstractmethod
-    async def __aexit__(
-        self,
-        exc_type: type[BaseException] | None,
-        exc: BaseException | None,
-        traceback: TracebackType | None,
-    ) -> None:
-        """*Rolls back the uncommitted changes and closes the session.*
-
-        Raises:
-            NotImplementedError: if the subclass does not implement the method.
-        """
-        raise NotImplementedError()
-
-    @abstractmethod
-    async def commit(self) -> None:
-        """*Commits everything done inside the unit of work.*
-
-        Raises:
-            NotImplementedError: if the subclass does not implement the method.
-        """
-        raise NotImplementedError()
-
-    @abstractmethod
-    async def rollback(self) -> None:
-        """*Discards everything done inside the unit of work.*
-
-        Raises:
-            NotImplementedError: if the subclass does not implement the method.
-        """
-        raise NotImplementedError()
-
-    @abstractmethod
-    async def flush(self) -> None:
-        """*Sends the pending changes to the database without committing them.*
-
-        Raises:
-            NotImplementedError: if the subclass does not implement the method.
-        """
-        raise NotImplementedError()
-
-    @abstractmethod
-    async def refresh(self, entity: object) -> None:
-        """*Reloads the state of the given entity from the database.*
+            AbstractAsyncContextManager[None]: context manager of the transaction.
 
         Raises:
             NotImplementedError: if the subclass does not implement the method.

@@ -1,12 +1,10 @@
-from app.models.users import User
-from app.repositories.sqlalchemy import SQLAlchemyRepository
-from app.repositories.user.base import UserRepositoryABC
+from app.models import User
+from app.repositories.base import Repository
+from app.schemas.user.request.user_data_request import UserDataRequestDTO
 
 
-class UserRepository(SQLAlchemyRepository[User], UserRepositoryABC):
-    """*User repository implementation.*"""
-
-    model = User
+class UsersRepository(Repository[User, UserDataRequestDTO, UserDataRequestDTO]):
+    """*Repository of the employee accounts.*"""
 
     async def get_by_email(self, email: str) -> User | None:
         """*Returns the user registered with the given email address.*
@@ -14,7 +12,7 @@ class UserRepository(SQLAlchemyRepository[User], UserRepositoryABC):
         Returns:
             User | None: the user or `None` if nobody uses this email.
         """
-        return await self.get_one(email=email)
+        return await self.get_by_field(email=email)
 
     async def get_by_phone_number(self, phone_number: str) -> User | None:
         """*Returns the user registered with the given phone number.*
@@ -22,4 +20,4 @@ class UserRepository(SQLAlchemyRepository[User], UserRepositoryABC):
         Returns:
             User | None: the user or `None` if nobody uses this phone number.
         """
-        return await self.get_one(phone_number=phone_number)
+        return await self.get_by_field(phone_number=phone_number)
